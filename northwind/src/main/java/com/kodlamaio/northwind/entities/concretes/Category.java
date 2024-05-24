@@ -1,0 +1,41 @@
+package com.kodlamaio.northwind.entities.concretes;
+
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "categories")
+@Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","products"})
+/*
+ * biz product üzerinden bir sorgu attığımız zaman product için categorye
+ * geliyor
+ * category yazdırılınca category üzerinden geri producta gidiyor product
+ * üzerinden geri categorye geliyor
+ * bu sonsuz bir döngüye giriyor ( recursive mantığı )
+ * bunu önlemek için hibernate lazy kullanıyoruz
+ */
+public class Category {
+
+    @Id
+    @Column(name = "category_id")
+    private int categoryId;
+
+    @Column(name = "category_name")
+    private String categoryName;
+
+    @OneToMany(mappedBy = "category")
+    private List<Product> products;
+}
